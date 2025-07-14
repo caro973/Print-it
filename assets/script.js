@@ -17,3 +17,26 @@ const slides = [
 	}
 ]
 
+//Séléction des élements HTML
+const arrowLeft = document.querySelector('.arrow_left');
+const arrowRight = document.querySelector('.arrow_right');
+
+//Fonction pour gérer le clic sur la gauche 
+
+function handleLeftClick() {
+	console.log('Clic sur la flêche gauche - Image précédente');
+	// Ou avec une alert:
+	// alert('Flêche gauche cliquée - Image précédente)
+}
+
+//Fonction pour gérer le clic sur la droite
+
+function handleRightClick() {
+	console.log('Clic sur la flêche droite - Image suivante ');
+	//Ou avec une alert:
+	// alert('Flêhce droite cliquée - Image suivante)
+}
+
+// Ajout des event listeners
+arrowLeft.addEventListener('click', handleLeftClick);
+arrowRight.addEventListener('click', handleRightClick);
