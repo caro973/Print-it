@@ -40,3 +40,21 @@ function handleRightClick() {
 // Ajout des event listeners
 arrowLeft.addEventListener('click', handleLeftClick);
 arrowRight.addEventListener('click', handleRightClick);
+
+//DOTS
+
+// Sélectionner le conteneur existant
+const dotsContainer = document.querySelector('.dots');
+
+// Créer les points dynamiquement
+for (let i = 0; i < slides.length; i++) {
+    const dot = document.createElement('div');
+    dot.classList.add('dot'); // classe de base pour chaque point
+    
+    // Le premier point est actif
+    if (i === 0) {
+        dot.classList.add('dot_selected'); // classe pour le point actif
+    }
+    
+    dotsContainer.appendChild(dot);
+}
