@@ -16,74 +16,85 @@ const slides = [
 		"tagLine":"Autocollants <span>avec découpe laser sur mesure</span>"
 	}
 ]
+// Utilisez vos données existantes - supprimez ce tableau d'exemple
+// et gardez seulement votre tableau slides original
 
-//Séléction des élements HTML
-const arrowLeft = document.querySelector('.arrow_left');
-const arrowRight = document.querySelector('.arrow_right');
-
-//Fonction pour gérer le clic sur la gauche 
-
-function handleLeftClick() {
-	console.log('Clic sur la flêche gauche - Image précédente');
-	// Ou avec une alert:
-	// alert('Flêche gauche cliquée - Image précédente)
-}
-
-//Fonction pour gérer le clic sur la droite
-
-function handleRightClick() {
-	console.log('Clic sur la flêche droite - Image suivante ');
-	//Ou avec une alert:
-	// alert('Flêhce droite cliquée - Image suivante)
-}
-
-// Ajout des event listeners
-arrowLeft.addEventListener('click', handleLeftClick);
-arrowRight.addEventListener('click', handleRightClick);
-
-//DOTS
-
-// Sélectionner le conteneur existant
-const dotsContainer = document.querySelector('.dots');
-
-// Créer les points dynamiquement
-for (let i = 0; i < slides.length; i++) {
-    const dot = document.createElement('div');
-    dot.classList.add('dot'); // classe de base pour chaque point
-    
-    // Le premier point est actif
-    if (i === 0) {
-        dot.classList.add('dot_selected'); // classe pour le point actif
-    }
-    
-    dotsContainer.appendChild(dot);
-}
-
-//	SLIDE
-
-
+// Variable pour suivre le slide actuel
 let currentSlide = 0;
 
+// SÉLECTION DES ÉLÉMENTS
+const arrowLeft = document.querySelector('.arrow_left');
+const arrowRight = document.querySelector('.arrow_right');
+const dotsContainer = document.querySelector('.dots');
+
+// FONCTIONS DE NAVIGATION
+function handleLeftClick() {
+    console.log('Clic sur la flèche gauche - Image précédente');
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    updateSlider();
+}
+
+function handleRightClick() {
+    console.log('Clic sur la flèche droite - Image suivante');
+    currentSlide = (currentSlide + 1) % slides.length;
+    updateSlider();
+}
+
+// FONCTION DE MISE À JOUR DU SLIDER
 function updateSlider() {
-    // Image
-    document.querySelector('.banner-img').src = `./assets/images/slideshow/${slides[currentSlide].image}`;
+    // Mise à jour de l'image
+    const bannerImg = document.querySelector('.banner-img');
+    if (bannerImg) {
+        bannerImg.src = `./assets/images/slideshow/${slides[currentSlide].image}`;
+    }
     
-    // Texte
-    document.querySelector('#banner p').innerHTML = slides[currentSlide].tagLine;
+    // Mise à jour du texte
+    const bannerText = document.querySelector('#banner p');
+    if (bannerText) {
+        bannerText.innerHTML = slides[currentSlide].tagLine;
+    }
     
-    // Dots
+    // Mise à jour des dots
     document.querySelectorAll('.dot').forEach((dot, index) => {
         dot.classList.toggle('dot_selected', index === currentSlide);
     });
 }
 
-function handleRightClick() {
-    currentSlide = (currentSlide + 1) % slides.length;
-    updateSlider();
+// CRÉATION DES DOTS
+function createDots() {
+    if (dotsContainer) {
+        // Vider le conteneur avant de créer les dots
+        dotsContainer.innerHTML = '';
+        
+        for (let i = 0; i < slides.length; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            
+            // Le premier dot est actif par défaut
+            if (i === 0) {
+                dot.classList.add('dot_selected');
+            }
+            
+            // Ajouter un event listener pour chaque dot
+            dot.addEventListener('click', () => {
+                currentSlide = i;
+                updateSlider();
+            });
+            
+            dotsContainer.appendChild(dot);
+        }
+    }
 }
 
-function handleLeftClick() {
-    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-    updateSlider();
+// AJOUT DES EVENT LISTENERS
+if (arrowLeft) {
+    arrowLeft.addEventListener('click', handleLeftClick);
 }
 
+if (arrowRight) {
+    arrowRight.addEventListener('click', handleRightClick);
+}
+
+// INITIALISATION
+createDots();
+updateSlider(); // Initialiser le premier slide
